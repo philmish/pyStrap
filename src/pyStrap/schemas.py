@@ -19,7 +19,7 @@ class BaseSetup:
         "requirements.txt",
         "requirements_dev.txt",
         ])
-    dirs: List[Union[str, os.PathLike]] = field(default_factory=lambda:[
+    dirs: List[Union[str, os.PathLike]] = field(default_factory=lambda: [
         "src",
         "tests",
     ])
@@ -38,28 +38,23 @@ class BaseSetup:
 class PythonSetup:
     python3: bool = True
     python2: bool = False
-    python3_versions: List[str] = field(default_factory=lambda:["3.6", "3.7", "3.8", "3.9"])
+    python3_versions: List[str] = field(default_factory=lambda: ["3.6", "3.7", "3.8", "3.9"])
     python2_versions: List[str] = field(default_factory=lambda: [])
 
     def generate_classifiers(self) -> str:
         base = "\n"
         if self.python3 and self.python2:
-            
             base += "Programming Language :: Python :: 3\n"
             for version in self.python3_versions:
                 base += f"Programming Language :: Python :: {version}\n"
-            
             base += "Programming Language :: Python :: 2\n"
             for version in self.python2_versions:
                 base += f"Programming Language :: Python :: {version}\n"
-
         elif self.python3 and not self.python2:
-            
             base += "Programming Language :: Python :: 3\n"
             base += "Programming Language :: Python :: 3 :: Only\n"
             for version in self.python3_versions:
                 base += f"Programming Language :: Python :: {version}\n"
-
         else:
             pass
 
@@ -73,13 +68,11 @@ class MetaData:
     author: str
     license_type: str = "MIT"
     license_file: str = "LICENSE"
-    platforms: List[str] = field(default_factory=lambda:["unix", "linux", "osx", "cygwin", "win32"])
+    platforms: List[str] = field(default_factory=lambda: ["unix", "linux", "osx", "cygwin", "win32"])
     python_settings: PythonSetup = PythonSetup()
 
     def generate_platforms(self) -> str:
         return ", ".join(self.platforms)
-
-
 
 
 @dataclass
@@ -96,10 +89,9 @@ class Options:
         return base
 
 
-
 @dataclass
 class TestingOptions:
-    testing: List[str] = field(default_factory=lambda:[
+    testing: List[str] = field(default_factory=lambda: [
         "pytest>=6.0",
         "pytest-cov>=2.0",
         "mypy>=0.910",
@@ -114,6 +106,12 @@ class TestingOptions:
         for requirement in self.testing:
             base += f"{requirement}\n"
         return base
+
+    def get_pytyped(self) -> str:
+        if self.py_typed:
+            return "yes"
+        else:
+            return "no"
 
 
 @dataclass
@@ -141,9 +139,8 @@ class SetupCfg:
             "zip_safe": self.options.zip_safe
         }
         conf["options.extras_require"] = {"testing": self.testing.generate_testing_reqs()}
-        conf["options.package_data"] = {f"{self.meta.name}": self.testing.py_typed}
-        conf["flake8"] ={"max-line-length": self.testing.flake8_max_line_length}
-        
+        conf["options.package_data"] = {f"{self.meta.name}": self.testing.get_pytyped()}
+        conf["flake8"] = {"max-line-length": str(self.testing.flake8_max_line_length)}
         return conf
 
 
@@ -157,6 +154,7 @@ class Requirements:
         "pytest-cov==2.12.1",
         "mypy===0.910"
         ])
+
 
 @dataclass
 class GitIgnore:
