@@ -1,4 +1,5 @@
-from pyStrap.schemas import BaseSetup, SetupCfg
+from pyStrap.schemas import BaseSetup, SetupCfg, Requirements
+
 
 
 class pyStrapper:
@@ -7,5 +8,9 @@ class pyStrapper:
         self,
         base: BaseSetup,
         setup: SetupCfg,
+        requirements: Requirements,
     ) -> None:
+        pass
+        
+    def pre_setup(self) -> None:
         pass
