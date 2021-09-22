@@ -1,7 +1,9 @@
-from pyStrap.schemas import SetupCfg, Requirements, GitIgnore
+from pyStrap.schemas import SetupCfg, Requirements, GitIgnore, PyProject
 
 from abc import ABC, abstractmethod
 from typing import Any
+
+import toml
 
 
 class ConfigWriter(ABC):
@@ -19,6 +21,15 @@ class SetupCfgWriter(ConfigWriter):
         conf = config.get_configparser()
         with open("setup.cfg", "w") as setup:
             conf.write(setup)
+
+
+class PyProjectWriter(ConfigWriter):
+
+    @staticmethod
+    def write_config(config: PyProject) -> None:
+        data = config.generate_toml()
+        with open("pyproject.toml", "w") as proj:
+            toml.dump(data, proj)
 
 
 class RequirementsWriter(ConfigWriter):

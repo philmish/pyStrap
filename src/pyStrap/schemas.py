@@ -145,6 +145,57 @@ class SetupCfg:
 
 
 @dataclass
+class BuildSystem:
+    requires: List[str] = field(default_factory=lambda: ["setuptools>=42.0", "wheel"])
+    build_backend: str = "setuptools.build_meta"
+
+    def dict(self):
+        return self.__dict__
+
+
+@dataclass
+class PyTestOptions:
+    adopts: str
+    testpaths: List[str] = field(default_factory=lambda: ["tests"])
+
+    def dict(self):
+        return self.__dict__
+
+
+@dataclass
+class MyPyOptions:
+    mypy_path: str = "src"
+    check_untyped_defs: bool = True
+    disallow_any_generics: bool = True
+    ignore_missing_imports: bool = True
+    no_implicit_optional: bool = True
+    show_error_codes: bool = True
+    strict_equality: bool = True
+    warn_redundant_casts: bool = True
+    warn_return_any: bool = True
+    warn_unreachable: bool = True
+    warn_unused_configs: bool = True
+    no_implicit_reexport: bool = True
+
+    def dict(self):
+        return self.__dict__
+
+
+@dataclass
+class PyProject:
+    build_system: BuildSystem
+    PyTest: PyTestOptions
+    MyPy: MyPyOptions
+
+    def generate_toml(self):
+        return {
+            "build-system": self.build_system.dict(),
+            "tool.pytest.ini_options": self.PyTest.dict(),
+            "tool.mypy": self.MyPy.dict()
+            }
+
+
+@dataclass
 class Requirements:
     requirements: List[str] = field(default_factory=lambda: [])
     dev: List[str] = field(default_factory=lambda: [

@@ -1,5 +1,5 @@
-from pyStrap.schemas import BaseSetup, SetupCfg, Requirements
-# from pyStrap.writer import SetupCfgWriter, RequirementsWriter
+from pyStrap.schemas import BaseSetup, SetupCfg, Requirements, GitIgnore, PyProject
+from pyStrap.writer import SetupCfgWriter, PyProjectWriter, RequirementsWriter, GitIgnoreWriter
 
 
 class pyStrapper:
@@ -8,18 +8,30 @@ class pyStrapper:
         self,
         base: BaseSetup,
         setup: SetupCfg,
+        project: PyProject,
         requirements: Requirements,
+        gitignore: GitIgnore = GitIgnore()
     ) -> None:
-        pass
+        self.base = base
+        self.setup = setup
+        self.project = project
+        self.requirements = requirements
+        self.gitignore = gitignore
 
-    def pre_setup(self) -> None:
-        pass
+    def _pre_setup(self) -> None:
+        self.base.setup_dirs()
+        self.base.setup_files()
 
-    def setup(self) -> None:
-        pass
+    def _setup(self) -> None:
+        SetupCfgWriter.write_config(config=self.setup)
+        PyProjectWriter.write_config(config=self.project)
+        RequirementsWriter.write_config(config=self.requirements)
+        GitIgnoreWriter.write_config(config=self.gitignore)
 
-    def post_setup(self) -> None:
+    def _post_setup(self) -> None:
         pass
 
     def strap(self) -> None:
-        pass
+        self._pre_setup()
+        self._setup()
+        self._post_setup()
