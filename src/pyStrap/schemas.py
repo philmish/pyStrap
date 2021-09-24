@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List, Union
+from typing import List, Union, Any
 import os
 import configparser
 
@@ -159,7 +159,7 @@ class PyTestOptions:
     testpaths: List[str] = field(default_factory=lambda: ["tests"])
 
     def dict(self):
-        return self.__dict__
+        return {"adopts": f"--cov={self.adopts}", "testpaths": self.testpaths}
 
 
 @dataclass
