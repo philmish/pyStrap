@@ -1,3 +1,6 @@
+import os
+import platform
+from typing import Union
 import click
 from pyStrap.CLI.utils.default import create_base_prompt, create_meta_prompt, create_options_prompt
 from pyStrap.schemas import BuildSystem, MyPyOptions, PyProject, PyTestOptions, Requirements, SetupCfg, TestingOptions
@@ -28,6 +31,14 @@ def default():
     )
     strapper.show_base_info()
     strapper.strap()
+
+@create.command(name="venv")
+def venv(path: Union[str, os.PathLike]):
+    if platform.system() in ["Linux", "Darwin"]:
+        pass
+    else:
+        pass
+
 
     
 
