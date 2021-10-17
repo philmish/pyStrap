@@ -1,5 +1,5 @@
 import os
-import platform
+import venv as _venv
 from typing import Union
 import click
 from pyStrap.CLI.utils.default import create_base_prompt, create_meta_prompt, create_options_prompt
@@ -32,15 +32,12 @@ def default():
     strapper.show_base_info()
     strapper.strap()
 
+
 @create.command(name="venv")
-def venv(path: Union[str, os.PathLike]):
-    if platform.system() in ["Linux", "Darwin"]:
-        pass
-    else:
-        pass
+@click.option("--name", default="venv", help="env name", type=str)
+def venv(name):
+    _venv.create(env_dir=name)
 
-
-    
 
 if __name__ == "__main__":
     create()
