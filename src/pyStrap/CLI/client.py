@@ -1,6 +1,4 @@
-import os
 import venv as _venv
-from typing import Union
 import click
 from pyStrap.CLI.utils.default import create_base_prompt, create_meta_prompt, create_options_prompt
 from pyStrap.schemas import BuildSystem, MyPyOptions, PyProject, PyTestOptions, Requirements, SetupCfg, TestingOptions
