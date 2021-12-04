@@ -150,6 +150,8 @@ class BuildSystem:
     build_backend: str = "setuptools.build_meta"
 
     def dict(self):
+        data = self.__dict__
+        data["build-backend"] = data.pop("build_backend")
         return self.__dict__
 
 
