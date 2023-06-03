@@ -38,7 +38,7 @@ class BaseSetup:
 class PythonSetup:
     python3: bool = True
     python2: bool = False
-    python3_versions: List[str] = field(default_factory=lambda: ["3.6", "3.7", "3.8", "3.9"])
+    python3_versions: List[str] = field(default_factory=lambda: ["3.8", "3.9", "3.10"])
     python2_versions: List[str] = field(default_factory=lambda: [])
 
     def generate_classifiers(self) -> str:
@@ -78,7 +78,7 @@ class MetaData:
 @dataclass
 class Options:
     requires: List[str]
-    python_version: str = ">=3.6"
+    python_version: str = ">=3.8"
     package_dir: str = "=src"
     zip_safe: str = "no"
 
@@ -92,11 +92,11 @@ class Options:
 @dataclass
 class TestingOptions:
     testing: List[str] = field(default_factory=lambda: [
-        "pytest>=6.0",
-        "pytest-cov>=2.0",
-        "mypy>=0.910",
-        "flake8>=3.9",
-        "tox>=3.24"
+        "pytest",
+        "pytest-cov",
+        "mypy",
+        "flake8",
+        "tox"
         ])
     flake8_max_line_length: int = 160
     py_typed: bool = True
