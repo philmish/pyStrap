@@ -35,7 +35,3 @@ def default():
 @click.option("--name", default="venv", help="env name", type=str)
 def venv(name):
     _venv.create(env_dir=name)
-
-
-if __name__ == "__main__":
-    create()
