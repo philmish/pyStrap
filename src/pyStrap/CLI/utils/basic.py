@@ -26,16 +26,16 @@ def parse_path_type(user_input: str) -> PathType:
 
 def choose_pathtype() -> PathType:
     print("Before entering your base path please choose if you want to enter a relativ(r) or absolut(a) path")
-    path_type = input("Type: ")
-    path_type = parse_path_type(path_type)
+    path = input("Type: ")
+    path_type = parse_path_type(path)
     if path_type is PathType.INVALID:
         print("Please enter a valid path type")
         choose_pathtype()
     return path_type
 
 def check_base_path_relativ(
-    path: Union[str, os.PathLike]
-) -> Union[str, os.PathLike]:
+    path: Union[str, os.PathLike[str]]
+) -> Union[str, os.PathLike[str]]:
     if path == ".":
         return os.getcwd()
     else:
@@ -45,13 +45,13 @@ def check_base_path_relativ(
         return path
 
 def check_base_path_absolute(
-    path: Union[str, os.PathLike]
-) -> Union[str, os.PathLike]:
+    path: Union[str, os.PathLike[str]]
+) -> Union[str, os.PathLike[str]]:
     if not os.path.isdir(path):
         raise IsADirectoryError(f"The path {path} is not a directory")
     return path
 
-def choose_path(ptype: PathType) -> Union[str, os.PathLike]:
+def choose_path(ptype: PathType) -> Union[str, os.PathLike[str]]:
     print("Now enter the base path for your project. (. is accepted as a relativ path)")
     path = input("Path: ")
     if ptype is PathType.RELATIVE:

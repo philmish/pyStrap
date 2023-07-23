@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List, Union, Any
+from typing import List, Union
 import os
 import configparser
 
@@ -7,8 +7,8 @@ import configparser
 @dataclass
 class BaseSetup:
     project_name: str
-    base_path: Union[str, os.PathLike]
-    files: List[Union[str, os.PathLike]] = field(default_factory=lambda: [
+    base_path: Union[str, os.PathLike[str]]
+    files: List[Union[str, os.PathLike[str]]] = field(default_factory=lambda: [
         "tox.ini",
         "setup.py",
         "setup.cfg",
@@ -19,7 +19,7 @@ class BaseSetup:
         "requirements.txt",
         "requirements_dev.txt",
         ])
-    dirs: List[Union[str, os.PathLike]] = field(default_factory=lambda: [
+    dirs: List[Union[str, os.PathLike[str]]] = field(default_factory=lambda: [
         "src",
         "tests",
     ])
