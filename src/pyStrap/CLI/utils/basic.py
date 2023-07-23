@@ -1,5 +1,5 @@
-from typing import Union, Optional
 import os
+from typing import Union, Optional
 from pyStrap.CLI.enums import Confirm, PathType
 from pyStrap.schemas import Options
 
@@ -51,20 +51,29 @@ def check_base_path_absolute(
         raise IsADirectoryError(f"The path {path} is not a directory")
     return path
 
-def choose_path(ptype: PathType) -> os.PathLike:
+def choose_path(ptype: PathType) -> Union[str, os.PathLike]:
     print("Now enter the base path for your project. (. is accepted as a relativ path)")
     path = input("Path: ")
     if ptype is PathType.RELATIVE:
         return check_base_path_relativ(path=path)
-    else:
+    elif ptype is PathType.ABSOLUTE:
         return check_base_path_absolute(path=path)
+    else:
+        raise ValueError("Unknown path type provided.")
 
 def create_default_options(
     reqs: str,
     delimiter: Optional[str] = ",",
 ) -> Options:
-    if delimiter not in reqs:
-        raise ValueError(f"Delimiter {delimiter} not in found in your requirements")
+    reqs = reqs.strip()
+    if reqs == "":
+        return Options(
+                requires=[]
+        )
+    if delimiter is None or delimiter not in reqs:
+        raise ValueError(
+                f"Delimiter {delimiter} not in found in your requirements"
+        )
     return Options(
         requires=reqs.split(delimiter)
     )
